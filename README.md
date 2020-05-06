@@ -28,4 +28,6 @@ Which functions will you create? (A rough flowchart, nothing too detailed)
 * Also, an apropriate picture/icon that reflects the weather will be displayed (rain, windy, sunny,...).
 
 A one-liner for each function to explain its purpose (if you have trouble explaining what a function does in one sentence, the function probably does too much and should be refactored into multiple functions).
-*
+* Tidygeocoder::geo_osm() takes a string as an input which indicates a location and returns the longitude and latitude of the location. If I have time, I will write my own function for that.
+* The function getWeather() takes the longitude and latitude of a location as input and retrieves weather data from www.openweathermap.org, transforms the data from JSON to a usable file format and saves the weather data in a list.
+* The function yourForecast() takes the output list from getWeather as input, as well as the variable that represents whether the users wants the current weather, the hourly forecast or the daily forecast. It saves the weather data of the users choice as a table and returns a list of the same data.
