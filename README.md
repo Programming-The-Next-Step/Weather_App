@@ -1,5 +1,4 @@
 # weather_app
-## Weather-App project
 
 What will you implement first?
 * I will first try to get weather data using the API by https://openweathermap.org.
@@ -15,7 +14,8 @@ What do you extend if you have extra time?
 * I could try to implement my own function that gets the latitude and longitude of a location (instead of using the package tidygeocoder)
 
 
-The code:
+
+*The code:*
 Will you use R or Python?
 * I will use R and R Shiny
 
