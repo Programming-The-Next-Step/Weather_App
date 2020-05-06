@@ -22,12 +22,10 @@ Which functions will you create? (A rough flowchart, nothing too detailed)
 * Then, they type in the location they are interested in and they choose what kind of weather forecast they would like to have (current weather, hourly forecast, daily forecast, there will be a drop down menu for the options).
 * The user press the button "search" to start the search for the weather data.
 * Then, the function tidygeocoder::geo_osm() will search for the longitude and latitude of this location and save it in an output file.
+* In this step, I will include an ifelse function which checks weather the location the user gave as input is valid. If is not a valid input, an error message will be displayed ("The location you entered could not be found. Please check the location for spelling mistakes.")
 * The output will be used in the function getWeather(longitude, latitude) to access the openweathermap.org API, to retrieve the weather data for the location, transform it to usable data format and save it as a file.
-* with an ifelse statement, the app will check if there is actually weather data in the output we got from getWeather(). If not, an error message will be shown to the user. "The location you entered could not be found. Please check the location for spelling mistakes."
-* If the data retrieved from  is actually valid, the app will create an output table with the information the user was looking for. 
-* ![GitHub Logo](/images/logo.png)
-Format: ![Alt Text](url)
-![GitHub Flowchart](C:/Users/JoeBe/Documents/UvA/1. Programming - Next Step/test.png)
+* The transformed data will be used to display a table with important information to the user (location name, date/hour, temperature, chances of rain, sunrise, sunset, feels like, pressure, percipation).
+* Also, an apropriate picture/icon that reflects the weather will be displayed (rain, windy, sunny,...).
 
 A one-liner for each function to explain its purpose (if you have trouble explaining what a function does in one sentence, the function probably does too much and should be refactored into multiple functions).
 *
