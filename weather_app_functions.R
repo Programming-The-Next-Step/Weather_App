@@ -45,11 +45,15 @@ getWeather <- function(location, apiKey){
   
 }
 
+## Example for getWeather ##
+getWeather("Amsterdam, Niederlande", Sys.getenv("MY_API"))
+
+
 
 # This function gets as input whether the user wants the current weather forecast, the hourly forecast, 
 # or the daily forecast, the location of interest and the apiKey. It returns a list with the desired wheather information.
 
-yourForecast <- function(currentHourlyDaily, location, apiKey){
+yourForecast <- function(currentHourlyDaily = current, location, apiKey){
   
   fullWeather <- getWeather(location, apiKey)
   
@@ -70,6 +74,9 @@ yourForecast <- function(currentHourlyDaily, location, apiKey){
   return(weather)
   
 }
+
+## Example for yourForecast()
+yourForecast("hourly", "Amsterdam, Niederlande", sys.getenv(MY_API))
   
 
 # This function get a location (as a string) as input and returns and saves a map of this location using leaflet::leaflet().  
@@ -88,6 +95,9 @@ getMap <- function(location){
   return(map)
   
 }
+
+## Example for getMap()
+getMap("Amsterdam, Niederlande")
 
 # This function gets a location and an apiKey as input. It looks for the current weather for the specified location and 
 # saves and returns a map of the location.
@@ -121,6 +131,9 @@ getIconMap <- function(location, apiKey){
   return(myMapImage)
   
 }
+
+## Example for getIconMap()
+getIconMap("Amsterdam, Niederlande", sys.getenv("MY_API"))
 
 
 # This function takes a location (string) and an apiKey (string) as input and returns an image that corresponds 
