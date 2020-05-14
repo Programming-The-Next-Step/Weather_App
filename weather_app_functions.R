@@ -11,18 +11,18 @@ library(tidygeocoder)
 # tidygeocoder::geo_osm() uses a string with an address as input and returns
 # the latitude and longitude of the location. 
 
-# You will need an API key to access the data from openweathermaps.org 
+# you will need an API key to access the data from openweathermaps.org 
 # you have to sign up for a free account to get the api key 
 # the api key is private and should not be shared with other people
 
-myApiKey <- "insert your api key here" 
+my_api_key <- "insert your api key here" 
 
 
 # The following function takes the location (in string format) and your apiKey (in string format) as input.
 # The function returns the weather data for a specific location as a list.
 # The weather data are provided by www.openweathermap.org
 
-getWeather <- function(location, apiKey){
+get_weather <- function(location, apiKey) {
   
   # first, we need to use tidygeocoder::geo_osm to get the longitude and the latitude of the desired location. 
   
@@ -31,43 +31,42 @@ getWeather <- function(location, apiKey){
   
   # now, we access www.openweatherapp.org and retrieve the weather data. 
   
-  myurl <- paste0("https://api.openweathermap.org/data/2.5/onecall?lat=", latitude, "&lon=", longitude,
+  my_url <- paste0("https://api.openweathermap.org/data/2.5/onecall?lat=", latitude, "&lon=", longitude,
                   "&exclude=FALSE&appid=", apiKey)
   
   # the data are in JSON format, they have to be transformed before we can use them. 
-  myRawResults <- httr::GET(myurl)
+  my_raw_results <- httr::GET(my_url)
   
-  mycontent <- httr::content(myRawResults, as = "text")
+  my_content <- httr::content(my_raw_results, as = "text")
   
-  myContentFromJson <- jsonlite::fromJSON(mycontent)
+  my_content_from_json <- jsonlite::fromJSON(my_content)
   
-  return(myContentFromJson)
+  return(my_content_from_json)
   
 }
 
-## Example for getWeather ##
-getWeather("Amsterdam, Niederlande", Sys.getenv("MY_API"))
-
+## Example for get_weather 
+get_weather("Amsterdam, Niederlande", Sys.getenv("MY_API"))
 
 
 # This function gets as input whether the user wants the current weather forecast, the hourly forecast, 
 # or the daily forecast, the location of interest and the apiKey. It returns a list with the desired wheather information.
 
-yourForecast <- function(currentHourlyDaily = current, location, apiKey){
+get_your_forecast <- function(cur_hour_day = current, location, apiKey) {
   
-  fullWeather <- getWeather(location, apiKey)
+  full_weather <- get_weather(location, apiKey)
   
-  if(currentHourlyDaily == "current"){
+  if (cur_hour_day == "current") {
     
-    weather <- fullWeather$current 
+    weather <- full_weather$current 
     
-  } else if(currentHourlyDaily == "hourly"){
+  } else if (cur_hour_day == "hourly") {
     
-    weather <- fullWeather$hourly
+    weather <- full_weather$hourly
     
-  } else if(currentHourlyDaily == "daily"){
+  } else if (cur_hour_day == "daily") {
     
-    weather <- fullWeather$daily
+    weather <- full_weather$daily
     
   }
   
@@ -76,12 +75,12 @@ yourForecast <- function(currentHourlyDaily = current, location, apiKey){
 }
 
 ## Example for yourForecast()
-yourForecast("hourly", "Amsterdam, Niederlande", sys.getenv(MY_API))
+get_your_forecast("hourly", "Amsterdam, Niederlande", sys.getenv(MY_API))
   
 
 # This function get a location (as a string) as input and returns and saves a map of this location using leaflet::leaflet().  
 
-getMap <- function(location){
+get_map <- function(location) {
   
   latitude <- tidygeocoder::geo_osm(location)$lat[1]
   longitude <- tidygeocoder::geo_osm(location)$long[1]
@@ -89,6 +88,7 @@ getMap <- function(location){
   map <- leaflet::leaflet() %>% 
     leaflet::setView(lng = longitude, lat = latitude, zoom = 11) %>%
     leaflet::addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE))
+  
   mapview::mapshot(map, file = "App-1/Rplot.png")
   map <- image_read("App-1/Rplot.png")
   
@@ -96,14 +96,15 @@ getMap <- function(location){
   
 }
 
-## Example for getMap()
-getMap("Amsterdam, Niederlande")
+## Example for get_map()
+get_map("Amsterdam, Niederlande")
+
 
 # This function gets a location and an apiKey as input. It looks for the current weather for the specified location and 
 # saves and returns a map of the location.
 # The map includes icons that correspond to the current weather forecast for this location. 
 
-getIconMap <- function(location, apiKey){
+get_icon_map <- function(location, apiKey) {
   
   latitude <- tidygeocoder::geo_osm(location)$lat[1]
   longitude <- tidygeocoder::geo_osm(location)$long[1]
@@ -113,10 +114,10 @@ getIconMap <- function(location, apiKey){
     addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE))
   mapshot(map, file = "App-1/Rplot.png")
   
-  myWeather <- getWeather(location, apiKey)
+  my_weather <- get_weather(location, apiKey)
   
   mymap <- image_scale(image_read(path = "App-1/Rplot.png"), "x400")
-  imageName <- paste("App-1/www/",myWeather$current$weather$icon,".png", sep = "")
+  imageName <- paste("App-1/www/",my_weather$current$weather$icon,".png", sep = "")
   icon <- image_scale(image_read("App-1/www/02d.png"), "x100")
   
   img <- c(mymap, icon)
@@ -125,76 +126,79 @@ getIconMap <- function(location, apiKey){
   image1 <- image_composite(mymap, icon, offset = "+20+20")
   image2 <-image_composite(image1, icon, offset = "+280+180")
   
-  image_write(myMapImage, path = "myWeather.png", format = "png")
-  image_write(image2, path = "myWeather2.png", format = "png")
+  image_write(myMapImage, path = "my_weather.png", format = "png")
+  image_write(image2, path = "my_weather2.png", format = "png")
   
   return(myMapImage)
   
 }
 
-## Example for getIconMap()
-getIconMap("Amsterdam, Niederlande", sys.getenv("MY_API"))
+## Example for get_icon_map()
+get_icon_map("Amsterdam, Niederlande", sys.getenv("MY_API"))
 
 
 # This function takes a location (string) and an apiKey (string) as input and returns an image that corresponds 
 # to the current weather forecast for this location using openweathermap.org
 
-getWeatherImage <- function(location, apiKey){
+get_weather_image <- function(location, apiKey) {
   
   latitude <- tidygeocoder::geo_osm(location)$lat[1]
   longitude <- tidygeocoder::geo_osm(location)$long[1]
   
-  myWeather <- getWeather(location, apiKey)
+  my_weather <- get_weather(location, apiKey)
   
-  if(myWeather$current$weather$icon == "01d"){
+  if (my_weather$current$weather$icon == "01d") {
     
-    weatherImage <- image_read("App-1/www/clearSky.jpg")
-    image_info(weatherImage)
-    weatherImage <- image_crop(weatherImage, "1920x1280")
+    weather_image <- image_read("App-1/www/clearSky.jpg")
+    image_info(weather_image)
+    weather_image <- image_crop(weather_image, "1920x1280")
     
-  } else if(myWeather$current$weather$icon == "02d" | myWeather$current$weather$icon == "03d" | myWeather$current$weather$icon == "04d"){
+  } else if (my_weather$current$weather$icon == "02d" | my_weather$current$weather$icon == "03d" | my_weather$current$weather$icon == "04d") {
     
-    weatherImage <- image_read("App-1/www/clouds.jpg")
-    weatherImage <- image_crop(weatherImage, "1920x1280")
+    weather_image <- image_read("App-1/www/clouds.jpg")
+    weather_image <- image_crop(weather_image, "1920x1280")
     
-  } else if(myWeather$current$weather$icon == "09d" | myWeather$current$weather$icon == "10d"){
+  } else if (my_weather$current$weather$icon == "09d" | my_weather$current$weather$icon == "10d") {
     
-    weatherImage <- image_read("App-1/www/rain.jpg")
+    weather_image <- image_read("App-1/www/rain.jpg")
     
-  } else if(myWeather$current$weather$icon == "11d"){
+  } else if (my_weather$current$weather$icon == "11d") {
     
-    weatherImage <- image_read("App-1/www/thunder2.jpg")
+    weather_image <- image_read("App-1/www/thunder2.jpg")
     
-  } else if(myWeather$current$weather$icon == "13d"){
+  } else if (my_weather$current$weather$icon == "13d") {
     
-    weatherImage <- image_read("App-1/www/snow.jpg")
+    weather_image <- image_read("App-1/www/snow.jpg")
     
-  } else if(myWeather$current$weather$icon == "50d"){
+  } else if (my_weather$current$weather$icon == "50d") {
     
-    weatherImage <- image_read("App-1/www/misty.jpg")
+    weather_image <- image_read("App-1/www/misty.jpg")
     
   }
     
-  return(weatherImage) 
+  return(weather_image) 
 
 }
+
+## Example for get_weather_image()
+get_weather_image("Amsterdam, Niederlande", sys.getenv("MY_API"))
 
 
 # write a function that returns a GIF with weather icons that fly over the map of the users chosen location 
 # TO BE CONTINUED 
 
-getWeatherGif <- function(location, apiKey){
+get_weather_gif <- function(location, apiKey) {
   
-  myWeather <- getWeather(location, apiKey)
+  my_weather <- get_weather(location, apiKey)
   
   ## create a map and overlay it with the weather icon for the current weather
   
   # get the map and scale the png file
-  map <- getMap(location)
+  map <- get_map(location)
   map <- image_scale(map, "x500")
   
   # get the icon and scale it
-  icon <- image_read(paste("App-1/www/", myWeather$current$weather$icon,".png", sep=""))
+  icon <- image_read(paste("App-1/www/", my_weather$current$weather$icon,".png", sep=""))
   icon <- image_scale(icon, "x200")
   
   # create different png files that will make up the GIF
@@ -214,19 +218,17 @@ getWeatherGif <- function(location, apiKey){
   animation <- image_animate(image_scale(img, "800x800"), fps = 1, dispose = "previous")
   
   # save the GIF 
-  image_write(animation, "myWeather.gif")
+  image_write(animation, "my_weather.gif")
   
   return(animation)
   
 }
+
+## Example for get_weather_gif ()
+get_weather_gif("Amsterdam, Niederlande", sys.getenv("MY_API"))
 
 
 ####################################################
 #### test functions ################################
 ####################################################
 
-myApi <- apiKey
-
-getWeatherGif("Marl, Deutschland", myApi)
-
-### here some raw things to test my function ###
