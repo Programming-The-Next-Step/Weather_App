@@ -7,6 +7,7 @@ library(leaflet)
 library(mapview)
 library(magick)
 library(tidygeocoder)
+library(stringr)
 
 # tidygeocoder::geo_osm() uses a string with an address as input and returns
 # the latitude and longitude of the location. 
