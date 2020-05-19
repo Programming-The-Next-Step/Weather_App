@@ -38,9 +38,8 @@ geocode <- function(location){
   
   # call the Url, retrieve the data and check if it was successful. 
   my_raw_results <- httr::GET(my_url)  
-  status_code(my_raw_results)
   
-  if (status_code != 200) {
+  if (status_code(my_raw_results)[[1]] != 200) {
     stop("Please enter a valid location!")
   }
   
@@ -68,8 +67,8 @@ get_weather <- function(location, apiKey) {
   
   # first, we need to use the function geocode(location) to get the longitude and the latitude of the desired location. 
   
-  latitude <- geocode(locaion)$latitude
-  longitude <- geocode(locaion)$longitude
+  latitude <- geocode(location)$latitude
+  longitude <- geocode(location)$longitude
   
   # latitude <- tidygeocoder::geo_osm(location)$lat[1] # old version
   # longitude <- tidygeocoder::geo_osm(location)$long[1] # old version 
@@ -90,7 +89,7 @@ get_weather <- function(location, apiKey) {
   
   # We check whether we successfully retrieved data from the API. 
   
-  if (status_code(my_raw_results) != 200) {
+  if (status_code(my_raw_results)[[1]] != 200) {
     
     stop("Something went wrong. You might have put in a wrong location or apiKey. Please check for spelling mistakes and try again.")
     
@@ -147,8 +146,8 @@ get_map <- function(location) {
   
   # first, we need to use the function geocode(location) to get the longitude and the latitude of the desired location. 
   
-  latitude <- geocode(locaion)$latitude
-  longitude <- geocode(locaion)$longitude
+  latitude <- geocode(location)$latitude
+  longitude <- geocode(location)$longitude
   
   # latitude <- tidygeocoder::geo_osm(location)$lat[1] # old version
   # longitude <- tidygeocoder::geo_osm(location)$long[1] # old version 
@@ -164,11 +163,11 @@ get_map <- function(location) {
   map <- leaflet::leaflet() %>% 
     leaflet::setView(lng = longitude, lat = latitude, zoom = 11) %>%
     leaflet::addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE))
-  mapview::mapshot(map, file = "App-1/Rplot.png")
+  mapview::mapshot(map, file = "map_plot.png")
   
   # Now open the png of the map again. 
   
-  map <- image_read("App-1/Rplot.png")
+  map <- image_read("map_plot.png")
   
   return(map)
   
@@ -186,8 +185,8 @@ get_icon_map <- function(location, apiKey) {
 
   # first, we need to use the function geocode(location) to get the longitude and the latitude of the desired location. 
   
-  latitude <- geocode(locaion)$latitude
-  longitude <- geocode(locaion)$longitude
+  latitude <- geocode(location)$latitude
+  longitude <- geocode(location)$longitude
   
   # latitude <- tidygeocoder::geo_osm(location)$lat[1] # old version
   # longitude <- tidygeocoder::geo_osm(location)$long[1] # old version 
@@ -199,12 +198,12 @@ get_icon_map <- function(location, apiKey) {
   }
   
   # Then, we use the leafllet() function to retrieve an open map with a specific latitude and longitude and zoom level.
-  # And we save it in a file called "App-1/Rplot.png".
+  # And we save it in a file called "map_plot.png".
   
   map <- leaflet() %>% 
     setView(lng = longitude, lat = latitude, zoom = 12) %>%
     addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE))
-  mapshot(map, file = "App-1/Rplot.png")
+  mapshot(map, file = "map_plot.png")
   
   # We retrieve the weather data from the location we are interested in
   
@@ -213,7 +212,7 @@ get_icon_map <- function(location, apiKey) {
   # We open the map again, that we previously saved. 
   # And we open the image of an icon that reflects the current weather we are interested in. 
   
-  mymap <- image_scale(image_read(path = "App-1/Rplot.png"), "x400")
+  mymap <- image_scale(image_read(path = "map_plot.png"), "x400")
   imageName <- paste('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png',sep ="")
   icon <- image_scale(image_read(imageName), "x100")
   
@@ -247,8 +246,8 @@ get_weather_image <- function(location, apiKey) {
   
   # Again, we retrieve the  long/lat of the location and the current weather.
   
-  latitude <- geocode(locaion)$latitude
-  longitude <- geocode(locaion)$longitude
+  latitude <- geocode(location)$latitude
+  longitude <- geocode(location)$longitude
   
   # latitude <- tidygeocoder::geo_osm(location)$lat[1] # old version
   # longitude <- tidygeocoder::geo_osm(location)$long[1] # old version 
@@ -352,8 +351,8 @@ get_weather_gif <- function(location, apiKey) {
   
 }
 
-## Example for get_weather_gif ()
-get_weather_gif("Amsterdam, Niederlande", sys.getenv("MY_API"))
+## Example for get_weather_gif()
+get_weather_gif("Amsterdam, Niederlande", Sys.getenv("MY_API"))
 
 
 ####################################################
