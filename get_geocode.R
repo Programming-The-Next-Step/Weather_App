@@ -48,6 +48,8 @@ geocode <- function(location){
 #### Test ####
 ##############
 
+# Reviewers, you can ignore this part. 
+
 
 location <- "Dennenrodepad 777, Amsterdam, Niederlande"
 
