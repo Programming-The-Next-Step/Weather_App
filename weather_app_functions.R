@@ -58,6 +58,9 @@ geocode <- function(location){
   
 }
 
+# Example for geocode() 
+geocode("Amsterdam, Netherlands")
+
 
 # The following function takes the location (in string format) and your apiKey (in string format) as input.
 # The function returns the weather data for a specific location as a list.
@@ -109,6 +112,7 @@ get_weather <- function(location, apiKey) {
 get_weather("Amsterdam, Niederlande", Sys.getenv("MY_API"))
 
 
+
 # This function gets as input whether the user wants the current weather forecast, the hourly forecast, 
 # or the daily forecast, the location of interest and the apiKey. It returns a list with the desired wheather information.
 
@@ -139,6 +143,7 @@ get_your_forecast <- function(cur_hour_day = "current", location, apiKey) {
 ## Example for yourForecast()
 get_your_forecast("hourly", "Amsterdam, Niederlande", sys.getenv(MY_API))
   
+
 
 # This function takes a location (as a string) as input and returns and saves a map of this location using leaflet::leaflet().  
 
@@ -175,6 +180,7 @@ get_map <- function(location) {
 
 ## Example for get_map()
 get_map("Amsterdam, Niederlande")
+
 
 
 # This function gets a location and an apiKey as input. It looks for the current weather for the specified location and 
@@ -237,6 +243,7 @@ get_icon_map <- function(location, apiKey) {
 
 ## Example for get_icon_map()
 get_icon_map("Amsterdam, Niederlande", sys.getenv("MY_API"))
+
 
 
 # This function takes a location (string) and an apiKey (string) as input and returns an image that corresponds 
@@ -311,6 +318,7 @@ get_weather_image <- function(location, apiKey) {
 get_weather_image("Amsterdam, Niederlande", sys.getenv("MY_API"))
 
 
+
 # write a function that returns a GIF with weather icons that fly over the map of the users chosen location 
 
 get_weather_gif <- function(location, apiKey) {
@@ -353,6 +361,7 @@ get_weather_gif <- function(location, apiKey) {
 
 ## Example for get_weather_gif()
 get_weather_gif("Amsterdam, Niederlande", Sys.getenv("MY_API"))
+
 
 
 ####################################################
