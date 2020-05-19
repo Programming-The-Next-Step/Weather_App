@@ -90,7 +90,7 @@ get_weather <- function(location, apiKey) {
   
   # We check whether we successfully retrieved data from the API. 
   
-  if(status_code(my_raw_results) != 200){
+  if (status_code(my_raw_results) != 200) {
     
     stop("Something went wrong. You might have put in a wrong location or apiKey. Please check for spelling mistakes and try again.")
     
@@ -214,7 +214,7 @@ get_icon_map <- function(location, apiKey) {
   # And we open the image of an icon that reflects the current weather we are interested in. 
   
   mymap <- image_scale(image_read(path = "App-1/Rplot.png"), "x400")
-  imageName <- paste("App-1/www/",my_weather$current$weather$icon,".png", sep = "")
+  imageName <- paste('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png',sep ="")
   icon <- image_scale(image_read(imageName), "x100")
   
   # Then we merge the map and the icon and save it in the file myMapImage 
@@ -267,7 +267,7 @@ get_weather_image <- function(location, apiKey) {
   
   if (my_weather$current$weather$icon == "01d") {
     
-    weather_image <- image_read("App-1/www/clearSky.jpg")
+    weather_image <- image_read("https://user-images.githubusercontent.com/64595164/82326387-09d50900-99dd-11ea-8ca1-fdbc291ab991.jpg")
     image_info(weather_image)
     weather_image <- image_crop(weather_image, "1920x1280")
     
@@ -275,32 +275,32 @@ get_weather_image <- function(location, apiKey) {
     
   } else if (my_weather$current$weather$icon == "02d" | my_weather$current$weather$icon == "03d" | my_weather$current$weather$icon == "04d") {
     
-    weather_image <- image_read("App-1/www/clouds.jpg")
+    weather_image <- image_read("https://user-images.githubusercontent.com/64595164/82326873-cdee7380-99dd-11ea-9899-cd9379a824f9.jpg")
     weather_image <- image_crop(weather_image, "1920x1280")
     
     # If the weather is rainy, store an image of rain in weather_image.
     
   } else if (my_weather$current$weather$icon == "09d" | my_weather$current$weather$icon == "10d") {
     
-    weather_image <- image_read("App-1/www/rain.jpg")
+    weather_image <- image_read("https://user-images.githubusercontent.com/64595164/82326953-e9f21500-99dd-11ea-80f3-5ddc2199632b.jpg")
     
     # If the weather is a thunderstorm, store an image of a thundestorm in weather_image.
     
   } else if (my_weather$current$weather$icon == "11d") {
     
-    weather_image <- image_read("App-1/www/thunder2.jpg")
+    weather_image <- image_read("https://user-images.githubusercontent.com/64595164/82326999-ffffd580-99dd-11ea-8317-cb0a01de15c7.jpg")
     
     # If the weather is snowy, store an image of a snowy landschape in weather_image.
     
   } else if (my_weather$current$weather$icon == "13d") {
     
-    weather_image <- image_read("App-1/www/snow.jpg")
+    weather_image <- image_read("https://user-images.githubusercontent.com/64595164/82327016-0b530100-99de-11ea-8131-b5e82581945d.jpg")
     
     # If the weather is misty, store an image of a misty landschape in weather_image.
     
   } else if (my_weather$current$weather$icon == "50d") {
     
-    weather_image <- image_read("App-1/www/misty.jpg")
+    weather_image <- image_read("https://user-images.githubusercontent.com/64595164/82327064-232a8500-99de-11ea-814c-e0fe6292dc5f.jpg")
     
   }
     
@@ -325,7 +325,8 @@ get_weather_gif <- function(location, apiKey) {
   map <- image_scale(map, "x500")
   
   # get the icon and scale it
-  icon <- image_read(paste("App-1/www/", my_weather$current$weather$icon,".png", sep=""))
+  # icon <- image_read(paste("App-1/www/", my_weather$current$weather$icon,".png", sep=""))
+  icon <- image_read(paste('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png',sep =""))
   icon <- image_scale(icon, "x200")
   
   # create different png files that will make up the GIF
@@ -376,3 +377,12 @@ my_url <- paste0("https://api.openweathermap.org/data/2.5/onecall?lat=", latitud
 my_raw_results <- httr::GET(my_url)
 
 status_code(my_raw_results)
+
+my_content <- httr::content(my_raw_results, as = "text")
+
+my_content_from_json <- jsonlite::fromJSON(my_content)
+
+my_content_from_json
+
+## download picture from web. 
+tiger <- image_read(paste('http://openweathermap.org/img/wn/',my_content_from_json$current$weather$icon, '@2x.png',sep =""))
