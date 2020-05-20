@@ -21,6 +21,17 @@ library(stringr)
 # The function geocode() takes a location as input and returns the longitude and latitude of this location.
 # This way, I don't need to install and use the external function tidygeocoder::geo_osm() anymore.
 
+#' Geocode gets the longitude and latitude of a given location.
+#'
+#' The function \emph{geocode} retrieves the longitude and the latitude of a location through www.openstreetmap.org.
+#'
+#' @param location String that describes a geographic location.
+#'
+#' @return A data frame with the input string (location), the longitude and the latitude.
+#'
+#' @examples
+#' long_lat <- geocode("Amsterdam, Netherlands")
+#'
 #' @export
 geocode <- function(location){
 
@@ -59,14 +70,25 @@ geocode <- function(location){
 
 }
 
-# Example for geocode()
-# geocode("Amsterdam, Netherlands")
 
 
 # The following function takes the location (in string format) and your apiKey (in string format) as input.
 # The function returns the weather data for a specific location as a list.
 # The weather data are provided by www.openweathermap.org
 
+#' Retrieves weather data for an input location
+#'
+#' The function \emph{get_weather} retrieves weatherdata for the input location via www.openweathermap.org
+#'
+#' @param location String that describes a geographical location.
+#'
+#' @param apiKey String that represents your personal apiKey. To receive an apiKey, please visit www.openweathermap.org and sign up for free.
+#'
+#' @return A complex list that includes a variety of weather data, such as current weather, daily weather, ...
+#'
+#' @example
+#' weather_amsterdam <- get_weather("Amsterdam, Netherlands", myApiKey)
+#'
 #' @export
 get_weather <- function(location, apiKey) {
 
@@ -109,9 +131,6 @@ get_weather <- function(location, apiKey) {
   return(my_content_from_json)
 
 }
-
-## Example for get_weather
-# get_weather("Amsterdam, Niederlande", Sys.getenv("MY_API"))
 
 
 
