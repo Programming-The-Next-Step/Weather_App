@@ -2,7 +2,7 @@
 % Please edit documentation in R/weather_app_functions.R
 \name{geocode}
 \alias{geocode}
-\title{Geocode gets the longitude and latitude of a given location.}
+\title{Geocode gets the longitude and latitude of a chosen location.}
 \usage{
 geocode(location)
 }
