@@ -1,0 +1,22 @@
+Package: weatherApp
+Title: This packages helps building a R Shiny weather app.
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Tisa",
+           family = "Bertlich",
+           role = c("aut", "cre"),
+           email = "tisa.bertlich@posteo.de",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: This package includes functions to retrieve weather data from www.openweathermap.org, displays corresponding icons and images and creates weahter GIFs.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
+Imports:
+  httr
+  jsonlite
+  dplyr
+  leaflet
+  mapview
+  magick
+  stringr
