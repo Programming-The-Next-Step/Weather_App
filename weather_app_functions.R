@@ -141,7 +141,7 @@ get_your_forecast <- function(cur_hour_day = "current", location, apiKey) {
 }
 
 ## Example for yourForecast()
-get_your_forecast("hourly", "Amsterdam, Niederlande", sys.getenv(MY_API))
+get_your_forecast("hourly", "Amsterdam, Niederlande", Sys.getenv(MY_API))
   
 
 
@@ -168,11 +168,11 @@ get_map <- function(location) {
   map <- leaflet::leaflet() %>% 
     leaflet::setView(lng = longitude, lat = latitude, zoom = 11) %>%
     leaflet::addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE))
-  mapview::mapshot(map, file = "map_plot.png")
+  mapview::mapshot(map, file = "www/map_plot.png")
   
   # Now open the png of the map again. 
   
-  map <- image_read("map_plot.png")
+  map <- image_read("www/map_plot.png")
   
   return(map)
   
@@ -209,7 +209,7 @@ get_icon_map <- function(location, apiKey) {
   map <- leaflet() %>% 
     setView(lng = longitude, lat = latitude, zoom = 12) %>%
     addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE))
-  mapshot(map, file = "map_plot.png")
+  mapshot(map, file = "www/map_plot.png")
   
   # We retrieve the weather data from the location we are interested in
   
@@ -218,7 +218,7 @@ get_icon_map <- function(location, apiKey) {
   # We open the map again, that we previously saved. 
   # And we open the image of an icon that reflects the current weather we are interested in. 
   
-  mymap <- image_scale(image_read(path = "map_plot.png"), "x400")
+  mymap <- image_scale(image_read(path = "www/map_plot.png"), "x400")
   imageName <- paste('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png',sep ="")
   icon <- image_scale(image_read(imageName), "x100")
   
@@ -234,15 +234,15 @@ get_icon_map <- function(location, apiKey) {
   
   # And we save both images on the computer. 
   
-  image_write(myMapImage, path = "my_weather.png", format = "png")
-  image_write(image2, path = "my_weather2.png", format = "png")
+  image_write(myMapImage, path = "www/my_weather.png", format = "png")
+  image_write(image2, path = "www/my_weather2.png", format = "png")
   
   return(myMapImage)
   
 }
 
 ## Example for get_icon_map()
-get_icon_map("Amsterdam, Niederlande", sys.getenv("MY_API"))
+get_icon_map("Amsterdam, Niederlande", Sys.getenv("MY_API"))
 
 
 
@@ -315,7 +315,7 @@ get_weather_image <- function(location, apiKey) {
 }
 
 ## Example for get_weather_image()
-get_weather_image("Amsterdam, Niederlande", sys.getenv("MY_API"))
+get_weather_image("Amsterdam, Niederlande", Sys.getenv("MY_API"))
 
 
 
