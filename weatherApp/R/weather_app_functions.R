@@ -7,21 +7,17 @@ library(leaflet)
 library(mapview)
 library(magick)
 library(stringr)
-# library(tidygeocoder)
 
-# you will need an API key to access the data from openweathermaps.org
-# you have to sign up for a free account to get the api key
+
+# you will need an API to use all the functions listed here.
+# to get an api key, you have to sign up at www.openweathermap.org for a free account.
 # the api key is private and should not be shared with other people
 
 # my_api_key <- "insert your api key here"
 
-# tidygeocoder::geo_osm() uses a string with an address as input and returns
-# the latitude and longitude of the location. The tidygeocoder::geo_osm() function was substituted with my own function geocode().
 
-# The function geocode() takes a location as input and returns the longitude and latitude of this location.
-# This way, I don't need to install and use the external function tidygeocoder::geo_osm() anymore.
 
-#' Geocode gets the longitude and latitude of a given location.
+#' Geocode gets the longitude and latitude of a chosen location.
 #'
 #' The function \emph{geocode} retrieves the longitude and the latitude of a location through www.openstreetmap.org.
 #'
@@ -72,13 +68,10 @@ geocode <- function(location){
 
 
 
-# The following function takes the location (in string format) and your apiKey (in string format) as input.
-# The function returns the weather data for a specific location as a list.
-# The weather data are provided by www.openweathermap.org
 
 #' Retrieves weather data for an input location
 #'
-#' The function \emph{get_weather} retrieves weatherdata for the input location via www.openweathermap.org
+#' The function \emph{get_weather} retrieves weatherdata for a chosen location via www.openweathermap.org
 #'
 #' @param location String that describes a geographical location.
 #'
@@ -134,9 +127,19 @@ get_weather <- function(location, apiKey) {
 
 
 
-# This function gets as input whether the user wants the current weather forecast, the hourly forecast,
-# or the daily forecast, the location of interest and the apiKey. It returns a list with the desired wheather information.
-
+#' get_your_forecast gets the current/hourly/daily weather forecast for a location.
+#'
+#' The function \emph{get_your_forecast} retrieves weather data from openweathermap.org.
+#'
+#' @param cur_hour_day String, either "current","hourly" or "daily".
+#' @param location String that describes a geographic location.
+#' @param apiKey String that represents your personal api Key from www.openweathermap.org
+#'
+#' @return A complex list with hourly/daily/current weather data.
+#'
+#' @examples
+#' my_forecast <- get_your_forecast("hourly", "Amsterdam, Niederlande", myApiKey)
+#'
 #' @export
 get_your_forecast <- function(cur_hour_day = "current", location, apiKey) {
 
@@ -162,13 +165,19 @@ get_your_forecast <- function(cur_hour_day = "current", location, apiKey) {
 
 }
 
-## Example for yourForecast()
-# get_your_forecast("hourly", "Amsterdam, Niederlande", Sys.getenv(MY_API))
-
 
 
 # This function takes a location (as a string) as input and returns and saves a map of this location using leaflet::leaflet().
 
+#' get_map gets and saves a map using leaflet()
+#'
+#' @param location String that describes a geographic location.
+#'
+#' @return A png of a map.
+#'
+#' @examples
+#' my_map <- get_map("Amsterdam, Niederlande")
+#'
 #' @export
 get_map <- function(location) {
 
@@ -201,15 +210,21 @@ get_map <- function(location) {
 
 }
 
-## Example for get_map()
-# get_map("Amsterdam, Niederlande")
 
 
 
-# This function gets a location and an apiKey as input. It looks for the current weather for the specified location and
-# saves and returns a map of the location.
-# The map includes icons that correspond to the current weather forecast for this location.
-
+#' get_icon_map creates a map with weather icons.
+#'
+#' The function \emph{get_icon_map} creates a map of a location with weather icons incorporated in it. The icons reflect the current weather.
+#'
+#' @param location String that describes a geographic location.
+#' @param apiKey String that represents your personal api Key from www.openweathermap.org
+#'
+#' @return An image that consists of a map with weather icons.
+#'
+#' @example
+#'get_icon_map("Amsterdam, Niederlande", myApiKey)
+#'
 #' @export
 get_icon_map <- function(location, apiKey) {
 
@@ -265,14 +280,18 @@ get_icon_map <- function(location, apiKey) {
 
 }
 
-## Example for get_icon_map()
-# get_icon_map("Amsterdam, Niederlande", Sys.getenv("MY_API"))
 
 
-
-# This function takes a location (string) and an apiKey (string) as input and returns an image that corresponds
-# to the current weather forecast for this location using openweathermap.org
-
+#' get_weather_image returns an image that reflects the current weather
+#'
+#' @param location String that describes a geographic location.
+#' @param apiKey String that represents your personal api Key from www.openweathermap.org
+#'
+#' @return An image that reflects the current weahter forecast of a location (Either clear sky, rainy, cloudy, storm, misty, snowy)
+#'
+#' @example
+#' my_weather_image <- get_weather_image("Amsterdam, Niederlande", myApiKey)
+#'
 #' @export
 get_weather_image <- function(location, apiKey) {
 
@@ -339,13 +358,18 @@ get_weather_image <- function(location, apiKey) {
 
 }
 
-## Example for get_weather_image()
-# get_weather_image("Amsterdam, Niederlande", Sys.getenv("MY_API"))
 
 
-
-# write a function that returns a GIF with weather icons that fly over the map of the users chosen location
-
+#' Creates a weather GIF for the current weather at a specific location.
+#'
+#' @param location String that describes a geographic location.
+#' @param apiKey String that represents your personal api Key from www.openweathermap.org
+#'
+#' @return A gif that reflects the weather at a chosen location.
+#'
+#' @example
+#' my_gif <- my_weather_gif("Amsterdam, Niederlande", myApiKey)
+#'
 #' @export
 get_weather_gif <- function(location, apiKey) {
 
@@ -385,6 +409,6 @@ get_weather_gif <- function(location, apiKey) {
 
 }
 
-## Example for get_weather_gif()
-# get_weather_gif("Amsterdam, Niederlande", Sys.getenv("MY_API"))
+
+
 
