@@ -15,5 +15,5 @@ get_weather(location, apiKey)
 A complex list that includes a variety of weather data, such as current weather, daily weather, ...
 }
 \description{
-The function \emph{get_weather} retrieves weatherdata for the input location via www.openweathermap.org
+The function \emph{get_weather} retrieves weatherdata for a chosen location via www.openweathermap.org
 }
