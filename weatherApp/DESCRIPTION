@@ -13,10 +13,10 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0
 Imports:
-  httr
-  jsonlite
-  dplyr
-  leaflet
-  mapview
-  magick
-  stringr
+  httr (>= 1.4.1),
+  jsonlite (>= 1.6.1),
+  dplyr (>= 0.8.5),
+  leaflet (>= 2.0.3),
+  mapview (>= 2.7.8),
+  magick (>= 2.3),
+  stringr (>= 1.4.0)
