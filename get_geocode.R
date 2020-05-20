@@ -44,6 +44,7 @@ geocode <- function(location){
   
 }
 
+
 ##############
 #### Test ####
 ##############
