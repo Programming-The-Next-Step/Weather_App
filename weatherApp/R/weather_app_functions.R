@@ -57,7 +57,7 @@ geocode <- function(location){
   my_content_from_json <- jsonlite::fromJSON(my_content)
 
   # Save the longitude latitude data in an object and return it.
-  geocode_data <- data.frame(3)
+  geocode_data <- data.frame()
   geocode_data$location <- location
   geocode_data$latitude <- my_content_from_json$lat
   geocode_data$longitude <- my_content_from_json$lon
@@ -303,9 +303,6 @@ get_weather_image <- function(location, api_key) {
   # latitude <- tidygeocoder::geo_osm(location)$lat[1] # old version
   # longitude <- tidygeocoder::geo_osm(location)$long[1] # old version
 
-  couldy = c("02d", "03d", "04d")
-  rainy = c("09d", "10d")
-
   if (is.na(latitude) | is.na(longitude)) {
 
     stop("Please type in a valid location")
@@ -315,8 +312,7 @@ get_weather_image <- function(location, api_key) {
   my_weather <- get_weather(location, api_key)
 
   # Now, depending on the current weather at the location, we save a specific image in the object weather_image.
-
-  # If the weather is sunny, store an image of a clear sky in weather_image.
+  # E.g. If the weather is sunny, store an image of a clear sky in weather_image.
 
   if (my_weather$current$weather$icon == "01d") {
 
@@ -326,14 +322,14 @@ get_weather_image <- function(location, api_key) {
 
     # If the weather is cloudly in any way, store an image of a cloudy sky in weather_image.
 
-  } else if (my_weather$current$weather$icon %in% cloudy) {
+  } else if (my_weather$current$weather$icon == "02d" | my_weather$current$weather$icon == "03d" | my_weather$current$weather$icon == "04d") {
 
     weather_image <- magick::image_read("https://user-images.githubusercontent.com/64595164/82326873-cdee7380-99dd-11ea-9899-cd9379a824f9.jpg")
     weather_image <- magick::image_crop(weather_image, "1920x1280")
 
     # If the weather is rainy, store an image of rain in weather_image.
 
-  } else if (my_weather$current$weather$icon %in% rainy) {
+  } else if (my_weather$current$weather$icon == "09d" | my_weather$current$weather$icon == "10d") {
 
     weather_image <- magick::image_read("https://user-images.githubusercontent.com/64595164/82326953-e9f21500-99dd-11ea-80f3-5ddc2199632b.jpg")
 
