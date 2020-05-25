@@ -20,3 +20,5 @@ Imports:
   mapview (>= 2.7.8),
   magick (>= 2.3),
   stringr (>= 1.4.0)
+Suggests: 
+    testthat (>= 2.1.0)
