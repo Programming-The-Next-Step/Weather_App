@@ -4,12 +4,12 @@
 \alias{get_weather_image}
 \title{get_weather_image returns an image that reflects the current weather}
 \usage{
-get_weather_image(location, apiKey)
+get_weather_image(location, api_key)
 }
 \arguments{
 \item{location}{String that describes a geographic location.}
 
-\item{apiKey}{String that represents your personal api Key from www.openweathermap.org}
+\item{api_key}{String that represents your personal api Key from www.openweathermap.org}
 }
 \value{
 An image that reflects the current weahter forecast of a location (Either clear sky, rainy, cloudy, storm, misty, snowy)
