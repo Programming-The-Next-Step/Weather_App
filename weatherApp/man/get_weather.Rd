@@ -4,12 +4,12 @@
 \alias{get_weather}
 \title{Retrieves weather data for an input location}
 \usage{
-get_weather(location, apiKey)
+get_weather(location, api_key)
 }
 \arguments{
 \item{location}{String that describes a geographical location.}
 
-\item{apiKey}{String that represents your personal apiKey. To receive an apiKey, please visit www.openweathermap.org and sign up for free.}
+\item{api_key}{String that represents your personal api_key. To receive an api_key, please visit www.openweathermap.org and sign up for free.}
 }
 \value{
 A complex list that includes a variety of weather data, such as current weather, daily weather, ...
