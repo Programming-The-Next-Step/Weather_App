@@ -36,13 +36,13 @@ geocode <- function(location){
   my_location_string <- my_location[[1]][1]
 
   for(i in 2:length(my_location[[1]])){
-    my_location_string <- paste(my_location_string, "+", my_location[[1]][i], sep = "")
+    my_location_string <- paste0(my_location_string, "+", my_location[[1]][i])
   }
 
   # Write down the url that retrieves the long/lat information from openstreetmap.org
 
-  my_url <- paste("https://nominatim.openstreetmap.org/search?q=", my_location_string,
-                  "&format=json&limit=1", sep="")
+  my_url <- paste0("https://nominatim.openstreetmap.org/search?q=", my_location_string,
+                  "&format=json&limit=1")
 
   # call the Url, retrieve the data and check if it was successful.
   my_raw_results <- httr::GET(my_url)
@@ -75,15 +75,15 @@ geocode <- function(location){
 #'
 #' @param location String that describes a geographical location.
 #'
-#' @param apiKey String that represents your personal apiKey. To receive an apiKey, please visit www.openweathermap.org and sign up for free.
+#' @param api_key String that represents your personal api_key. To receive an api_key, please visit www.openweathermap.org and sign up for free.
 #'
 #' @return A complex list that includes a variety of weather data, such as current weather, daily weather, ...
 #'
 #' @example
-#' weather_amsterdam <- get_weather("Amsterdam, Netherlands", myApiKey)
+#' weather_amsterdam <- get_weather("Amsterdam, Netherlands", my_api_key)
 #'
 #' @export
-get_weather <- function(location, apiKey) {
+get_weather <- function(location, api_key) {
 
   # first, we need to use the function geocode(location) to get the longitude and the latitude of the desired location.
 
@@ -102,7 +102,7 @@ get_weather <- function(location, apiKey) {
   # now, we access www.openweatherapp.org and retrieve the weather data.
 
   my_url <- paste0("https://api.openweathermap.org/data/2.5/onecall?lat=", latitude, "&lon=", longitude,
-                  "&exclude=FALSE&appid=", apiKey)
+                  "&exclude=FALSE&appid=", api_key)
 
   # We retrieve the data using the url
   my_raw_results <- httr::GET(my_url)
@@ -111,7 +111,7 @@ get_weather <- function(location, apiKey) {
 
   if (status_code(my_raw_results)[[1]] != 200) {
 
-    stop("Something went wrong. You might have put in a wrong location or apiKey. Please check for spelling mistakes and try again.")
+    stop("Something went wrong. You might have put in a wrong location or api_key. Please check for spelling mistakes and try again.")
 
   }
 
@@ -127,23 +127,23 @@ get_weather <- function(location, apiKey) {
 
 
 
-#' get_your_forecast gets the current/hourly/daily weather forecast for a location.
+#' get_forecast gets the current/hourly/daily weather forecast for a location.
 #'
-#' The function \emph{get_your_forecast} retrieves weather data from openweathermap.org.
+#' The function \emph{get_forecast} retrieves weather data from openweathermap.org.
 #'
 #' @param cur_hour_day String, either "current","hourly" or "daily".
 #' @param location String that describes a geographic location.
-#' @param apiKey String that represents your personal api Key from www.openweathermap.org
+#' @param api_key String that represents your personal api Key from www.openweathermap.org
 #'
 #' @return A complex list with hourly/daily/current weather data.
 #'
 #' @examples
-#' my_forecast <- get_your_forecast("hourly", "Amsterdam, Niederlande", myApiKey)
+#' my_forecast <- get_forecast("hourly", "Amsterdam, Niederlande", my_api_key)
 #'
 #' @export
-get_your_forecast <- function(cur_hour_day = "current", location, apiKey) {
+get_forecast <- function(cur_hour_day = "current", location, api_key) {
 
-  full_weather <- get_weather(location, apiKey)
+  full_weather <- get_weather(location, api_key)
 
   weather <- NA
 
@@ -218,15 +218,15 @@ get_map <- function(location) {
 #' The function \emph{get_icon_map} creates a map of a location with weather icons incorporated in it. The icons reflect the current weather.
 #'
 #' @param location String that describes a geographic location.
-#' @param apiKey String that represents your personal api Key from www.openweathermap.org
+#' @param api_key String that represents your personal api Key from www.openweathermap.org
 #'
 #' @return An image that consists of a map with weather icons.
 #'
 #' @example
-#'get_icon_map("Amsterdam, Niederlande", myApiKey)
+#'get_icon_map("Amsterdam, Niederlande", my_api_key)
 #'
 #' @export
-get_icon_map <- function(location, apiKey) {
+get_icon_map <- function(location, api_key) {
 
   # first, we need to use the function geocode(location) to get the longitude and the latitude of the desired location.
 
@@ -252,31 +252,31 @@ get_icon_map <- function(location, apiKey) {
 
   # We retrieve the weather data from the location we are interested in
 
-  my_weather <- get_weather(location, apiKey)
+  my_weather <- get_weather(location, api_key)
 
   # We open the map again, that we previously saved.
   # And we open the image of an icon that reflects the current weather we are interested in.
 
-  mymap <- magick::image_scale(image_read(path = "map_plot.png"), "x400")
-  imageName <- paste('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png',sep ="")
-  icon <- magick::image_scale(image_read(imageName), "x100")
+  my_map <- magick::image_scale(image_read(path = "map_plot.png"), "x400")
+  image_name <- paste0('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png')
+  icon <- magick::image_scale(image_read(image_name), "x100")
 
-  # Then we merge the map and the icon and save it in the file myMapImage
+  # Then we merge the map and the icon and save it in the file my_map_image
 
-  img <- c(mymap, icon)
-  myMapImage <- magick::image_mosaic(img)
+  img <- c(my_map, icon)
+  my_map_image <- magick::image_mosaic(img)
 
   # And we create another image that uses two instead of one icon on the map.
 
-  image1 <- magick::image_composite(mymap, icon, offset = "+20+20")
+  image1 <- magick::image_composite(my_map, icon, offset = "+20+20")
   image2 <- magick::image_composite(image1, icon, offset = "+280+180")
 
   # And we save both images on the computer.
 
-  magick::image_write(myMapImage, path = "my_weather.png", format = "png")
+  magick::image_write(my_map_image, path = "my_weather.png", format = "png")
   magick::image_write(image2, path = "my_weather2.png", format = "png")
 
-  return(myMapImage)
+  return(my_map_image)
 
 }
 
@@ -285,15 +285,15 @@ get_icon_map <- function(location, apiKey) {
 #' get_weather_image returns an image that reflects the current weather
 #'
 #' @param location String that describes a geographic location.
-#' @param apiKey String that represents your personal api Key from www.openweathermap.org
+#' @param api_key String that represents your personal api Key from www.openweathermap.org
 #'
 #' @return An image that reflects the current weahter forecast of a location (Either clear sky, rainy, cloudy, storm, misty, snowy)
 #'
 #' @example
-#' my_weather_image <- get_weather_image("Amsterdam, Niederlande", myApiKey)
+#' my_weather_image <- get_weather_image("Amsterdam, Niederlande", my_api_key)
 #'
 #' @export
-get_weather_image <- function(location, apiKey) {
+get_weather_image <- function(location, api_key) {
 
   # Again, we retrieve the  long/lat of the location and the current weather.
 
@@ -303,13 +303,16 @@ get_weather_image <- function(location, apiKey) {
   # latitude <- tidygeocoder::geo_osm(location)$lat[1] # old version
   # longitude <- tidygeocoder::geo_osm(location)$long[1] # old version
 
+  couldy = c("02d", "03d", "04d")
+  rainy = c("09d", "10d")
+
   if (is.na(latitude) | is.na(longitude)) {
 
     stop("Please type in a valid location")
 
   }
 
-  my_weather <- get_weather(location, apiKey)
+  my_weather <- get_weather(location, api_key)
 
   # Now, depending on the current weather at the location, we save a specific image in the object weather_image.
 
@@ -323,14 +326,14 @@ get_weather_image <- function(location, apiKey) {
 
     # If the weather is cloudly in any way, store an image of a cloudy sky in weather_image.
 
-  } else if (my_weather$current$weather$icon == "02d" | my_weather$current$weather$icon == "03d" | my_weather$current$weather$icon == "04d") {
+  } else if (my_weather$current$weather$icon %in% cloudy) {
 
     weather_image <- magick::image_read("https://user-images.githubusercontent.com/64595164/82326873-cdee7380-99dd-11ea-9899-cd9379a824f9.jpg")
     weather_image <- magick::image_crop(weather_image, "1920x1280")
 
     # If the weather is rainy, store an image of rain in weather_image.
 
-  } else if (my_weather$current$weather$icon == "09d" | my_weather$current$weather$icon == "10d") {
+  } else if (my_weather$current$weather$icon %in% rainy) {
 
     weather_image <- magick::image_read("https://user-images.githubusercontent.com/64595164/82326953-e9f21500-99dd-11ea-80f3-5ddc2199632b.jpg")
 
@@ -363,17 +366,17 @@ get_weather_image <- function(location, apiKey) {
 #' Creates a weather GIF for the current weather at a specific location.
 #'
 #' @param location String that describes a geographic location.
-#' @param apiKey String that represents your personal api Key from www.openweathermap.org
+#' @param api_key String that represents your personal api Key from www.openweathermap.org
 #'
 #' @return A gif that reflects the weather at a chosen location.
 #'
 #' @example
-#' my_gif <- my_weather_gif("Amsterdam, Niederlande", myApiKey)
+#' my_gif <- my_weather_gif("Amsterdam, Niederlande", my_api_key)
 #'
 #' @export
-get_weather_gif <- function(location, apiKey) {
+get_weather_gif <- function(location, api_key) {
 
-  my_weather <- get_weather(location, apiKey)
+  my_weather <- get_weather(location, api_key)
 
   ## create a map and overlay it with the weather icon for the current weather
 
@@ -382,8 +385,8 @@ get_weather_gif <- function(location, apiKey) {
   map <- magick::image_scale(map, "x500")
 
   # get the icon and scale it
-  # icon <- image_read(paste("App-1/www/", my_weather$current$weather$icon,".png", sep=""))
-  icon <- magick::image_read(paste('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png',sep =""))
+  # icon <- image_read(paste0("App-1/www/", my_weather$current$weather$icon,".png"))
+  icon <- magick::image_read(paste0('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png'))
   icon <- magick::image_scale(icon, "x200")
 
   # create different png files that will make up the GIF
