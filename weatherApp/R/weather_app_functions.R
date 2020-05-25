@@ -57,7 +57,7 @@ geocode <- function(location){
   my_content_from_json <- jsonlite::fromJSON(my_content)
 
   # Save the longitude latitude data in an object and return it.
-  geocode_data <- data.frame()
+  geocode_data <- data.frame(3)
   geocode_data$location <- location
   geocode_data$latitude <- my_content_from_json$lat
   geocode_data$longitude <- my_content_from_json$lon
@@ -101,8 +101,8 @@ get_weather <- function(location, api_key) {
 
   # now, we access www.openweatherapp.org and retrieve the weather data.
 
-  my_url <- paste0("https://api.openweathermap.org/data/2.5/onecall?lat=", latitude, "&lon=", longitude,
-                  "&exclude=FALSE&appid=", api_key)
+  my_url <- paste("https://api.openweathermap.org/data/2.5/onecall?lat=", latitude, "&lon=", longitude,
+                  "&exclude=FALSE&appid=", api_key, sep ="")
 
   # We retrieve the data using the url
   my_raw_results <- httr::GET(my_url)
@@ -200,11 +200,11 @@ get_map <- function(location) {
   map <- leaflet::leaflet() %>%
     leaflet::setView(lng = longitude, lat = latitude, zoom = 11) %>%
     leaflet::addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE))
-  mapview::mapshot(map, file = "map_plot.png")
+  mapview::mapshot(map, file = "www/map_plot.png")
 
   # Now open the png of the map again.
 
-  map <- magick::image_read("map_plot.png")
+  map <- magick::image_read("www/map_plot.png")
 
   return(map)
 
@@ -248,7 +248,7 @@ get_icon_map <- function(location, api_key) {
   map <- leaflet::leaflet() %>%
     leaflet::setView(lng = longitude, lat = latitude, zoom = 12) %>%
     leaflet::addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE))
-  mapview::mapshot(map, file = "map_plot.png")
+  mapview::mapshot(map, file = "www/map_plot.png")
 
   # We retrieve the weather data from the location we are interested in
 
@@ -257,7 +257,7 @@ get_icon_map <- function(location, api_key) {
   # We open the map again, that we previously saved.
   # And we open the image of an icon that reflects the current weather we are interested in.
 
-  my_map <- magick::image_scale(image_read(path = "map_plot.png"), "x400")
+  my_map <- magick::image_scale(image_read(path = "www/map_plot.png"), "x400")
   image_name <- paste0('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png')
   icon <- magick::image_scale(image_read(image_name), "x100")
 
@@ -273,8 +273,8 @@ get_icon_map <- function(location, api_key) {
 
   # And we save both images on the computer.
 
-  magick::image_write(my_map_image, path = "my_weather.png", format = "png")
-  magick::image_write(image2, path = "my_weather2.png", format = "png")
+  magick::image_write(my_map_image, path = "www/my_weather.png", format = "png")
+  magick::image_write(image2, path = "www/my_weather2.png", format = "png")
 
   return(my_map_image)
 
@@ -353,6 +353,8 @@ get_weather_image <- function(location, api_key) {
 
   }
 
+  magick::image_write(weather_image, path = "www/weather_image.png", format = "png")
+
   return(weather_image)
 
 }
@@ -402,7 +404,7 @@ get_weather_gif <- function(location, api_key) {
   animation <- magick::image_animate(image_scale(img, "800x800"), fps = 1, dispose = "previous")
 
   # save the GIF
-  magick::image_write(animation, "my_weather.gif")
+  magick::image_write(animation, "www/my_weather.gif")
 
   return(animation)
 
