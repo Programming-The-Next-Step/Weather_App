@@ -4,12 +4,12 @@
 \alias{get_icon_map}
 \title{get_icon_map creates a map with weather icons.}
 \usage{
-get_icon_map(location, apiKey)
+get_icon_map(location, api_key)
 }
 \arguments{
 \item{location}{String that describes a geographic location.}
 
-\item{apiKey}{String that represents your personal api Key from www.openweathermap.org}
+\item{api_key}{String that represents your personal api Key from www.openweathermap.org}
 }
 \value{
 An image that consists of a map with weather icons.
