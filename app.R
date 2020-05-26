@@ -10,6 +10,7 @@
 
 library(shiny)
 library(shinyWidgets)
+library(png) 
 
 # This creates the user interface 
 ui <- fluidPage( 
@@ -26,7 +27,15 @@ ui <- fluidPage(
                textInput(inputId = "location", h3("Search for a location"),
                          value = "Enter a location..."),
                align = "center")
-        ),
+    ),
+    
+    # insert select box 
+    fluidRow(
+        column(width = 12, 
+               selectInput("cur_hour_day", "Please indicate the type of forecast you are looking for", 
+                           c("current weather", "hourly forecast", "daily forecast")),
+               align = "center")
+    ),
     
     # insert search button 
     # has to be used with "eventReactive()"
@@ -36,17 +45,27 @@ ui <- fluidPage(
                align = "center"),
                br(), 
                br()
-        ),
+    ),
     
-    # test reactivity 
+    # display chosen location: 
     fluidRow(
-        column(width = 12,
-               verbatimTextOutput("my_output_location"), 
+        column(width = 6,
+               offset = 3,
+               verbatimTextOutput("my_output_location"),
                align = "center")
-        ), 
+    ), 
     
+    # display weather image: 
     fluidRow(
         column(width = 12, 
+               imageOutput("weather_image"), 
+               align = "center")
+    ),
+    
+    # display current general weather forecast
+    fluidRow(
+        column(width = 6, 
+               offset = 3,
                verbatimTextOutput("current_weather"),
                align = "center")
     )
@@ -74,46 +93,18 @@ server <- function(input, output, session) {
         weatherApp::get_weather(my_location(), my_api_key)$current$weather$main
         
     })
+    
+    output$weather_image <- renderImage({
+        
+        weatherApp::get_weather_image(my_location(), my_api_key)
+        list( src = "www/weather_image.png",
+              alt = paste("weather image"),
+              width = 300,
+              height = 220)
+        
+    })
 }
 
 # Run the application 
 shinyApp(ui = ui, server = server)
 
-
-
-###################
-### Old Version ###
-###################
-
-
-# This creates the user interface 
-ui <- fluidPage( 
-    
-    setBackgroundColor("LightSkyBlue"),
-    
-    titlePanel(h1("Get your personal weather forecast", align = "center")),
-    fluidRow(column(width = 12, h3("Your location", align = "center"))),
-    fluidRow(column(width = 12, align = "center", img(src = "rain.png",
-                                                      height = 70, width = 70))),
-    fluidRow(column(width = 12, "Display of your weather forecast, e.g. rainy", align = "center")), 
-    fluidRow(column(width = 12, h3("Display of the degrees in Celsius", align = "center"))),
-    br(),
-    fluidRow(column(width = 1, offset = 2, "22C"),  
-             column(width = 1, "20C"), 
-             column(width = 1, "20C"),
-             column(width = 1, "20C"),
-             column(width = 1, "20C"),
-             column(width = 1, "18C")),
-    br(),
-    fluidRow(column(width = 4, offset = 2, "Sunrise"), 
-             column(width = 4, offset = 2, "Sunset"))
-
-) 
-
-# This creates what the server is running 
-server <- function(input, output, session) {
-
-}
-
-# Run the application 
-shinyApp(ui = ui, server = server)
