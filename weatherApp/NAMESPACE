@@ -2,6 +2,7 @@
 
 export(geocode)
 export(get_forecast)
+export(get_icon)
 export(get_icon_map)
 export(get_map)
 export(get_weather)
