@@ -1,0 +1,13 @@
+name: weather_app
+title: weather_app
+username:
+account: bertlich
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2364924
+bundleId: 3196226
+url: https://bertlich.shinyapps.io/weather_app/
+when: 1590594868.23992
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: README.md|Vignette_weatherApp_Bertlich.Rmd|weatherApp_0.0.0.9000.tar.gz|www/map_plot.png|weatherApp
