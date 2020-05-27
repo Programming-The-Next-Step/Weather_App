@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### 2020-05-27
 
 The weatherApp packages provides functions that are useful when interested in building a weather app in R Shiny. This vignette summarizes the most important functionalities to get started with weatherApp. 
-You can find an example for a weather app following this link: 
+You can find an example for a weather app following this link:  https://bertlich.shinyapps.io/weather_app/
 
 #### Getting your own API key for www.openweathermap.org 
 If you are interested in working with this packages, you must sign up for your own personal apikey. With this api key, you can retrieve data using the information provided by www.openweathermap.org 
