@@ -56,9 +56,14 @@ geocode <- function(location){
 
   my_content_from_json <- jsonlite::fromJSON(my_content)
 
+  # check if data retrieval was successful
+  if(length(my_content_from_json) == 0)  {
+    stop("Something went wrong. Please check your input location")
+  }
+
   # Save the longitude latitude data in an object and return it.
   geocode_data <- data.frame(3)
-  geocode_data$location <- location
+  geocode_data$location <- my_content_from_json$display_name
   geocode_data$latitude <- my_content_from_json$lat
   geocode_data$longitude <- my_content_from_json$lon
 
@@ -120,6 +125,11 @@ get_weather <- function(location, api_key) {
   my_content <- httr::content(my_raw_results, as = "text")
 
   my_content_from_json <- jsonlite::fromJSON(my_content)
+
+  # check if data retrieval was successful
+  if(length(my_content_from_json) == 0)  {
+    stop("Something went wrong. Please check your apiKey and input location")
+  }
 
   return(my_content_from_json)
 
@@ -195,7 +205,7 @@ get_map <- function(location) {
 
   }
 
-  # Retrieve an open map and save it in the object "map" and save ot on the computer.
+  # Retrieve an open map and save it in the object "map" and on the computer.
 
   map <- leaflet::leaflet() %>%
     leaflet::setView(lng = longitude, lat = latitude, zoom = 11) %>%
