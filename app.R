@@ -8,12 +8,22 @@
 #
 ### change something here 
 
-devtools::install_github("Programming-The-Next-Step/weather_app/weatherApp", ref = "Functions-for-RPackage")
+
+setRepositories(addURLs = c(weatherApp = "https://github.com/Programming-The-Next-Step/weather_app.git"))
 library(shiny)
 library(shinyWidgets)
 library(png) 
 library(shinycssloaders)
 library(weatherApp)
+library(httr)
+library(jsonlite)
+library(dplyr)
+library(leaflet)
+library(mapview)
+library(magick)
+library(stringr)
+
+my_api_key <- Sys.getenv("MY_API")
 
 # This creates the user interface 
 ui <- fluidPage(
@@ -137,8 +147,6 @@ ui <- fluidPage(
 
 # This creates what the server is running 
 server <- function(input, output, session) {
-    
-    #my_api_key <- Sys.getenv("MY_API")
     
     # Only update the input for location if button is pressed. 
     my_location <- eventReactive(input$search, {
