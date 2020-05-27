@@ -8,10 +8,12 @@
 #
 ### change something here 
 
+devtools::install_github("Programming-The-Next-Step/weather_app/weatherApp", ref = "Functions-for-RPackage")
 library(shiny)
 library(shinyWidgets)
 library(png) 
 library(shinycssloaders)
+library(weatherApp)
 
 # This creates the user interface 
 ui <- fluidPage(
