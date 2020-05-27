@@ -39,6 +39,7 @@ ui <- fluidPage(
                      ),
             
             # insert select box 
+            # this is not useful yet but I intend to use it later, if time allows.
             fluidRow(column(width = 12,
                             align = "center",
                             selectInput("cur_hour_day", "Please indicate the type of forecast you are looking for",
@@ -144,7 +145,12 @@ server <- function(input, output, session) {
     
     output$my_output_location <- renderText({
         
-        my_location()
+        location_string <- weatherApp::geocode(my_location())$location
+        if(location_string > 25) {
+            location_string <- substr(location_string, 1, 25)
+        }
+        
+        location_string
         
     })
     
@@ -209,7 +215,7 @@ server <- function(input, output, session) {
         
         weatherApp::get_weather_gif(my_location(), my_api_key)
         list( src = "www/my_weather.gif",
-              alt = paste("weather_GIF"),
+              alt = paste("weather_gif"),
               width = 220,
               height = 150)
     })
