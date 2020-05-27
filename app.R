@@ -11,6 +11,7 @@
 library(shiny)
 library(shinyWidgets)
 library(png) 
+library(shinycssloaders)
 
 # This creates the user interface 
 ui <- fluidPage(
@@ -48,25 +49,46 @@ ui <- fluidPage(
             # has to be used with "eventReactive()"
             fluidRow(column(width = 12, actionButton(inputId = "search", "Search"),
                             align = "center")
-                     )
+                     ),
+            br(),
+            br(),
+            
+            # display weather GIF: 
+            fluidRow(
+                column(width = 12, 
+                       align = "center", 
+                       HTML("<div style='height: 150px;'>"),
+                       imageOutput("weather_gif"), 
+                       HTML("</div>"))
+            )
         ),
         
         mainPanel(
             
-            # display chosen location: 
+            # display chosen location and weather icon: 
             fluidRow(
                 column(width = 6,
                        offset = 3,
                        verbatimTextOutput("my_output_location"),
-                       align = "center")
+                       align = "center"),
+                column(width = 3,
+                       align = "center", 
+                       HTML("<div style='height:40px;'>"),
+                       imageOutput("weather_icon"), 
+                       HTML("</div>"))
             ), 
+            br(), 
             
             # display weather image: 
             fluidRow(
                 column(width = 12, 
-                       imageOutput("weather_image"), 
-                       align = "center")
+                       align = "center", 
+                       HTML("<div style='height: 100px;'>"),
+                       withSpinner(imageOutput("weather_image"), type = 1), 
+                       HTML("</div>"))
             ),
+            br(), 
+            br(),
             
             # display current general weather forecast
             fluidRow(
@@ -134,7 +156,7 @@ server <- function(input, output, session) {
     
     output$current_temp <- renderText({
         
-        temperature <- weatherApp::get_weather(my_location(), my_api_key)$current$temp - 273.15
+        temperature <- round(weatherApp::get_weather(my_location(), my_api_key)$current$temp - 273.15, 2)
         paste(temperature, "degrees Celsius")
         
     })
@@ -155,13 +177,13 @@ server <- function(input, output, session) {
     
     output$feels_like <- renderText({
         
-        paste("Feels like:", (weatherApp::get_weather(my_location(), my_api_key)$current$feels_like - 273.15))
+        paste("Feels like:", round((weatherApp::get_weather(my_location(), my_api_key)$current$feels_like - 273.15), 2) , "degrees Celsius")
         
     })
     
     output$wind_speed <- renderText({
         
-        paste("Wind speed:", weatherApp::get_weather(my_location(), my_api_key)$current$wind_speed)
+        paste("Wind speed:", weatherApp::get_weather(my_location(), my_api_key)$current$wind_speed, "[m/s]")
         
     })
     
@@ -172,6 +194,24 @@ server <- function(input, output, session) {
               alt = paste("weather_image"),
               width = 500,
               height = 100)
+    })
+    
+    output$weather_icon <- renderImage({
+        
+        weatherApp::get_icon(my_location(), my_api_key)
+        list( src = "www/weather_icon.png",
+              alt = paste("weather_icon"),
+              width = 50,
+              height = 40)
+    })
+    
+    output$weather_gif <- renderImage({
+        
+        weatherApp::get_weather_gif(my_location(), my_api_key)
+        list( src = "www/my_weather.gif",
+              alt = paste("weather_GIF"),
+              width = 220,
+              height = 150)
     })
     
 }
