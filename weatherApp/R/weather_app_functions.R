@@ -210,7 +210,32 @@ get_map <- function(location) {
 
 }
 
+#' get_icon gets weather icons.
+#'
+#' The function \emph{get_icon} saves the icon that reflects the current weather.
+#'
+#' @param location String that describes a geographic location.
+#' @param api_key String that represents your personal api Key from www.openweathermap.org
+#'
+#' @return An image of the weather icons.
+#'
+#' @example
+#'get_icon("Amsterdam, Niederlande", my_api_key)
+#'
+#' @export
+get_icon <- function(location, api_key) {
 
+  latitude <- geocode(location)$latitude
+  longitude <- geocode(location)$longitude
+
+  my_weather <- get_weather(location, api_key)
+
+  image_name <- paste0('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png')
+  icon <- magick::image_scale(image_read(image_name), "x100")
+
+  magick::image_write(icon, path = "www/weather_icon.png", format = "png")
+
+}
 
 
 #' get_icon_map creates a map with weather icons.
@@ -352,6 +377,8 @@ get_weather_image <- function(location, api_key) {
     weather_image <- magick::image_read("https://user-images.githubusercontent.com/64595164/82327064-232a8500-99de-11ea-814c-e0fe6292dc5f.jpg")
 
   }
+
+  weather_image <- image_crop(weather_image, "1920x500")
 
   magick::image_write(weather_image, path = "www/weather_image.png", format = "png")
 
