@@ -5,26 +5,43 @@ date: "27 5 2020"
 output: html_document
 ---
 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Writing a weather app with weatherApp and Shiny 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+### Tisa Bertlich
+### 2020-05-27
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+The weatherApp packages provides functions that are useful when interested in building a weather app in R Shiny. This vignette summarizes the most important functionalities to get started with weatherApp. 
+You can find an example for a weather app following this link: 
 
-```{r cars}
-summary(cars)
+#### Getting your own API key for www.openweathermap.org 
+If you are interested in working with this packages, you must sign up for your own personal apikey. With this api key, you can retrieve data using the information provided by www.openweathermap.org 
+To get an api key, follow this link and sign up for an account (free options available): https://home.openweathermap.org/users/sign_up. After you signed up, you can access your personal api key. 
+
+### Installing and loading weatherApp
+```{r}
+install.packages("weatherApp")
+library(weatherApp)
 ```
 
-## Including Plots
+### Geocode a location
 
-You can also embed plots, for example:
+### Retrieve weather data via www.openweathermap.org API 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+### Retrieve a weather icon 
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+### Retrieve a weather image 
+
+### Retrieve an interactive weather GIF 
+
+### User Interface 
+- screenshot of UI 
+
+
+
+
+
