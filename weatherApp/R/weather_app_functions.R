@@ -205,16 +205,21 @@ get_map <- function(location) {
 
   }
 
+  # Check if the subdirectory /www exists. If not, create it.
+  if(!file.exists("./www")){
+    dir.create("./www")
+  }
+
   # Retrieve an open map and save it in the object "map" and on the computer.
 
   map <- leaflet::leaflet() %>%
     leaflet::setView(lng = longitude, lat = latitude, zoom = 11) %>%
     leaflet::addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE))
-  mapview::mapshot(map, file = "www/map_plot.png")
+  mapview::mapshot(map, file = "./www/map_plot.png")
 
   # Now open the png of the map again.
 
-  map <- magick::image_read("www/map_plot.png")
+  map <- magick::image_read("./www/map_plot.png")
 
   return(map)
 
@@ -235,6 +240,11 @@ get_map <- function(location) {
 #' @export
 get_icon <- function(location, api_key) {
 
+  # Check if the subdirectory /www exists. If not, create it.
+  if(!file.exists("./www")){
+    dir.create("./www")
+  }
+
   latitude <- geocode(location)$latitude
   longitude <- geocode(location)$longitude
 
@@ -243,7 +253,7 @@ get_icon <- function(location, api_key) {
   image_name <- paste0('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png')
   icon <- magick::image_scale(image_read(image_name), "x100")
 
-  magick::image_write(icon, path = "www/weather_icon.png", format = "png")
+  magick::image_write(icon, path = "./www/weather_icon.png", format = "png")
 
 }
 
@@ -277,13 +287,18 @@ get_icon_map <- function(location, api_key) {
 
   }
 
+  # Check if the subdirectory /www exists. If not, create it.
+  if(!file.exists("./www")){
+    dir.create("./www")
+  }
+
   # Then, we use the leafllet() function to retrieve an open map with a specific latitude and longitude and zoom level.
   # And we save it in a file called "map_plot.png".
 
   map <- leaflet::leaflet() %>%
     leaflet::setView(lng = longitude, lat = latitude, zoom = 12) %>%
     leaflet::addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE))
-  mapview::mapshot(map, file = "www/map_plot.png")
+  mapview::mapshot(map, file = "./www/map_plot.png")
 
   # We retrieve the weather data from the location we are interested in
 
@@ -292,7 +307,7 @@ get_icon_map <- function(location, api_key) {
   # We open the map again, that we previously saved.
   # And we open the image of an icon that reflects the current weather we are interested in.
 
-  my_map <- magick::image_scale(image_read(path = "www/map_plot.png"), "x400")
+  my_map <- magick::image_scale(image_read(path = "./www/map_plot.png"), "x400")
   image_name <- paste0('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png')
   icon <- magick::image_scale(image_read(image_name), "x100")
 
@@ -308,8 +323,8 @@ get_icon_map <- function(location, api_key) {
 
   # And we save both images on the computer.
 
-  magick::image_write(my_map_image, path = "www/my_weather.png", format = "png")
-  magick::image_write(image2, path = "www/my_weather2.png", format = "png")
+  magick::image_write(my_map_image, path = "./www/my_weather.png", format = "png")
+  magick::image_write(image2, path = "./www/my_weather2.png", format = "png")
 
   return(my_map_image)
 
@@ -345,6 +360,11 @@ get_weather_image <- function(location, api_key) {
   }
 
   my_weather <- get_weather(location, api_key)
+
+  # Check if the subdirectory "./www" exists. If not, create it.
+  if(!file.exists("./www")){
+    dir.create("./www")
+  }
 
   # Now, depending on the current weather at the location, we save a specific image in the object weather_image.
   # E.g. If the weather is sunny, store an image of a clear sky in weather_image.
@@ -390,7 +410,7 @@ get_weather_image <- function(location, api_key) {
 
   weather_image <- image_crop(weather_image, "1920x500")
 
-  magick::image_write(weather_image, path = "www/weather_image.png", format = "png")
+  magick::image_write(weather_image, path = "./www/weather_image.png", format = "png")
 
   return(weather_image)
 
@@ -410,6 +430,11 @@ get_weather_image <- function(location, api_key) {
 #'
 #' @export
 get_weather_gif <- function(location, api_key) {
+
+  # Check if the subdirectory /www exists. If not, create it.
+  if(!file.exists("./www")){
+    dir.create("./www")
+  }
 
   my_weather <- get_weather(location, api_key)
 
@@ -441,7 +466,7 @@ get_weather_gif <- function(location, api_key) {
   animation <- magick::image_animate(image_scale(img, "800x800"), fps = 1, dispose = "previous")
 
   # save the GIF
-  magick::image_write(animation, "www/my_weather.gif")
+  magick::image_write(animation, "./www/my_weather.gif")
 
   return(animation)
 
