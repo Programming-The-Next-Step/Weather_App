@@ -74,7 +74,7 @@ my_weather <- get_weather(location = "Amsterdam, NL", api_key = my_api_key)
 my_weather$current$weather
 
 ```
-The object my_weather contains a large variety of information, stored as complex data frame. A full list of what the object contains can be found here: https://openweathermap.org/api/one-call-api.
+The object my_weather is a complex list that contains a large variety of information. A full list of what the object contains can be found here: https://openweathermap.org/api/one-call-api.
 
 ### Retrieve a weather icon 
 In some instances, it might be handy to display a weather icon of the current weather. This can be done by using get_icon(). 
