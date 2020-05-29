@@ -18,11 +18,11 @@ test_that("get_weather retrieves weather data and saves it as a list.", {
 
 })
 
-test_that("get_forecast retrives weather data and saves it in a reduced form", {
+test_that("get_forecast retrives weather data and saves it in a reduced form, which contains 14 inputs", {
 
   my_forecast <- get_forecast("current", "Amsterdam, Netherlands", Sys.getenv("MY_API"))
 
-  expect_equal(length(my_forecast), 15)
+  expect_equal(length(my_forecast), 14)
 
 })
 
@@ -46,7 +46,15 @@ test_that("get_weather_image saves an image that reflects the current weather.",
 
   my_weather_image <- get_weather_image("Amsterdam, Netherlands", Sys.getenv("MY_API"))
 
-  expect_equal(image_info(weather_image)$format, "JPEG")
+  expect_equal(image_info(my_weather_image)$format, "JPEG")
+
+})
+
+test_that("get_icon saves an icon that corresponds to the current weather.", {
+
+  my_weather_icon <- get_icon("Amsterdam, Netherlands", Sys.getenv("MY_API"))
+
+  expect_equal(image_info(my_weather_icon)$format, "PNG" )
 
 })
 
