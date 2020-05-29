@@ -1,0 +1,47 @@
+---
+title: "Vignette weatherApp"
+author: "Bertlich"
+date: "27 5 2020"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Writing a weather app with weatherApp and Shiny 
+
+### Tisa Bertlich
+### 2020-05-27
+
+The weatherApp packages provides functions that are useful when interested in building a weather app in R Shiny. This vignette summarizes the most important functionalities to get started with weatherApp. 
+You can find an example for a weather app following this link:  https://bertlich.shinyapps.io/weather_app/
+
+#### Getting your own API key for www.openweathermap.org 
+If you are interested in working with this packages, you must sign up for your own personal apikey. With this api key, you can retrieve data using the information provided by www.openweathermap.org 
+To get an api key, follow this link and sign up for an account (free options available): https://home.openweathermap.org/users/sign_up. After you signed up, you can access your personal api key. 
+
+### Installing and loading weatherApp
+```{r}
+install.packages("weatherApp")
+library(weatherApp)
+```
+
+### Geocode a location
+
+### Retrieve weather data via www.openweathermap.org API 
+
+### Retrieve a weather icon 
+
+### Retrieve a weather image 
+
+### Retrieve an interactive weather GIF 
+
+### User Interface 
+- screenshot of UI 
+
+
+
+
+
