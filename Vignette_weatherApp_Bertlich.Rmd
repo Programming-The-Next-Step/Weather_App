@@ -10,38 +10,114 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Writing a weather app with weatherApp and Shiny 
+## Writing a weather app with weatherApp and R Shiny 
 
 ### Tisa Bertlich
-### 2020-05-27
+### 2020-05-29
 
 The weatherApp packages provides functions that are useful when interested in building a weather app in R Shiny. This vignette summarizes the most important functionalities to get started with weatherApp. 
-You can find an example for a weather app following this link:  https://bertlich.shinyapps.io/weather_app/
+You can find an example for a weather app hosted on the shinyserver following this link:  https://bertlich.shinyapps.io/weather_app/
 
 #### Getting your own API key for www.openweathermap.org 
-If you are interested in working with this packages, you must sign up for your own personal apikey. With this api key, you can retrieve data using the information provided by www.openweathermap.org 
-To get an api key, follow this link and sign up for an account (free options available): https://home.openweathermap.org/users/sign_up. After you signed up, you can access your personal api key. 
+If you are interested in working with this packages, you must sign up for your own personal api key. With this api key, you can retrieve data using the information provided by www.openweathermap.org. 
+To get an api key, follow this link and sign up for an account (free options available): https://home.openweathermap.org/users/sign_up. After you signed up, you can access your personal api key and thereby the functionalities of this package. 
 
 ### Installing and loading weatherApp
-```{r}
-install.packages("weatherApp")
+Loading packages that you need for the functions to work: 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(httr)
+library(jsonlite)
+library(dplyr)
+library(leaflet)
+library(mapview)
+library(magick)
+library(stringr)
+```
+
+If you did not install the weatherApp package yet, you can do so by using the following command (without "#"): 
+```{r echo=TRUE}
+# devtools::install_github("Programming-The-Next-Step/weather_app/weatherApp", ref = "Functions-for-RPackage")
+```
+Now you can load the weatherApp package: 
+```{r echo=TRUE}
 library(weatherApp)
 ```
 
-### Geocode a location
+### Geocode() a location using the www.openstreetmap.org API 
+The function geocode() helps you retrieve a longitude and a latitude for a specific location. It takes a string as input and returns a data frame with the location geocode() retrieved, the correponding latitude and the longitude. It uses the openstreetmap.org API to access the data. 
+```{r}
+my_geocode <- geocode(location = "Amsterdam, the Netherlands")
+my_geocode$location
+my_geocode$longitude
+my_geocode$latitude
+
+```
+
+Note: If your input location is unspecific and there might be different locations that fit your input location, the code retrieves the location with the lowest input-ID assigned by openstreetmap. This might not be the location you are looking for. 
+Example: 
+```{r}
+not_my_geocode <- geocode(location = "Amsterdam")
+not_my_geocode$location 
+```
+Just putting in "Amsterdam" as a location retrieves location data from "Ile de la Nouvelle-Amsterdam", not from "Amsterdam, the Netherlands". 
 
 ### Retrieve weather data via www.openweathermap.org API 
+The function get_weather(location, apiKey) uses the openweathermap.org API to retrieve weather information about a specific location. 
+```{r}
+my_api_key <- "Insert your personal api key retrieved from www.openweathermap.org here"
+my_api_key <- Sys.getenv("MY_API")
+```
+For this demo, I stored my apiKey as an object in the environment. I will retrieve it with Sys.getenv(). The user, however, has to insert his*her own personal api Key when using this function.
+```{r}
+my_weather <- get_weather(location = "Amsterdam, NL", api_key = my_api_key)
+my_weather$current$weather
+
+```
+The object my_weather contains a large variety of information, stored as complex data frame. A full list of what the object contains can be found here: https://openweathermap.org/api/one-call-api.
 
 ### Retrieve a weather icon 
+In some instances, it might be handy to display a weather icon of the current weather. This can be done by using get_icon(). 
+The function saves an image that corresponds to the weather of your desired location in your local environment. 
+The path from your working directory to the image is "/www/weather_icon.png". 
+```{r}
+get_icon(location = "Amsterdam, NL", api_key = my_api_key)
+```
+
+```{r echo=TRUE}
+wd <- getwd()
+weather_icon <- image_read(paste0(wd, "/www/weather_icon.png"))
+print(weather_icon)
+```
+
 
 ### Retrieve a weather image 
+It might also be handy to be able to display an image that corresponds to the current weather. 
+The function get_weather_image does that and saves it in in a subfolder in your working directory ("/www/weather_image.png").
+```{r}
+get_weather_image(location = "Amsterdam, NL", api_key = my_api_key)
+```
+And here an example of a place with nice weather: 
+```{r}
+get_weather_image(location = "Abu Dhabi, UAE", api_key = my_api_key)
+```
 
 ### Retrieve an interactive weather GIF 
+Using weatherApp, you can create a GIF that consists of icons that move over the map of your chosen location:
+```{r}
+get_weather_gif(location = "Amsterdam, NL", api_key = my_api_key)
+```
+
 
 ### User Interface 
-- screenshot of UI 
+You can use these functions to build an interatice R Shiny app. 
+Here is an example of a R Shiny app hosted on the Shiny Server: https://bertlich.shinyapps.io/weather_app/.
 
-
-
-
-
+Here are screenshots of how it could look like: <br>
+```{r echo=FALSE}
+image_read("https://user-images.githubusercontent.com/64595164/83258980-8e7f0e80-a1b7-11ea-86b5-df0358e664f9.PNG")
+```
+<br>
+```{r echo=FALSE}
+image_read("https://user-images.githubusercontent.com/64595164/83259000-98087680-a1b7-11ea-9f27-2e1b7fbffce3.PNG")
+```
