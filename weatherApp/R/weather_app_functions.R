@@ -205,6 +205,12 @@ get_map <- function(location) {
 
   }
 
+  # Check if directory "./www" exists
+  # if not, create it.
+  if(!dir.exists("./www")) {
+    dir.create("./www")
+  }
+
   # Retrieve an open map and save it in the object "map" and on the computer.
 
   map <- leaflet::leaflet() %>%
@@ -240,10 +246,19 @@ get_icon <- function(location, api_key) {
 
   my_weather <- get_weather(location, api_key)
 
-  image_name <- paste0('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png')
-  icon <- magick::image_scale(image_read(image_name), "x100")
+  # Check if directory "./www" exists
+  # if not, create it.
+  if(!dir.exists("./www")) {
+    dir.create("./www")
+  }
+
+  image_name <- paste0('http://openweathermap.org/img/wn/', my_weather$current$weather$icon, '@2x.png')
+  icon <- magick::image_read(image_name)
+  icon <- magick::image_scale(icon, "x100")
 
   magick::image_write(icon, path = "www/weather_icon.png", format = "png")
+
+  return(icon)
 
 }
 
@@ -277,6 +292,12 @@ get_icon_map <- function(location, api_key) {
 
   }
 
+  # Check if directory "./www" exists
+  # if not, create it.
+  if(!dir.exists("./www")) {
+    dir.create("./www")
+  }
+
   # Then, we use the leafllet() function to retrieve an open map with a specific latitude and longitude and zoom level.
   # And we save it in a file called "map_plot.png".
 
@@ -292,9 +313,9 @@ get_icon_map <- function(location, api_key) {
   # We open the map again, that we previously saved.
   # And we open the image of an icon that reflects the current weather we are interested in.
 
-  my_map <- magick::image_scale(image_read(path = "www/map_plot.png"), "x400")
+  my_map <- magick::image_scale(magick::image_read(path = "www/map_plot.png"), "x400")
   image_name <- paste0('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png')
-  icon <- magick::image_scale(image_read(image_name), "x100")
+  icon <- magick::image_scale(magick::image_read(image_name), "x100")
 
   # Then we merge the map and the icon and save it in the file my_map_image
 
@@ -390,6 +411,12 @@ get_weather_image <- function(location, api_key) {
 
   weather_image <- image_crop(weather_image, "1920x500")
 
+  # Check if directory "./www" exists
+  # if not, create it.
+  if(!dir.exists("./www")) {
+    dir.create("./www")
+  }
+
   magick::image_write(weather_image, path = "www/weather_image.png", format = "png")
 
   return(weather_image)
@@ -420,7 +447,6 @@ get_weather_gif <- function(location, api_key) {
   map <- magick::image_scale(map, "x500")
 
   # get the icon and scale it
-  # icon <- image_read(paste0("App-1/www/", my_weather$current$weather$icon,".png"))
   icon <- magick::image_read(paste0('http://openweathermap.org/img/wn/',my_weather$current$weather$icon, '@2x.png'))
   icon <- magick::image_scale(icon, "x200")
 
@@ -439,6 +465,12 @@ get_weather_gif <- function(location, api_key) {
   # put the different images together to create and interactive GIF
   img <- c(image11, image22, image33, image44, image55)
   animation <- magick::image_animate(image_scale(img, "800x800"), fps = 1, dispose = "previous")
+
+  # Check if directory "./www" exists
+  # if not, create it.
+  if(!dir.exists("./www")) {
+    dir.create("./www")
+  }
 
   # save the GIF
   magick::image_write(animation, "www/my_weather.gif")
