@@ -8,8 +8,8 @@
 #
 ### change something here 
 
-
-setRepositories(addURLs = c(weatherApp = "https://github.com/Programming-The-Next-Step/weather_app.git"))
+#devtools::install_github("Programming-The-Next-Step/weather_app/weatherApp", ref = "Functions-for-RPackage")
+#setRepositories(addURLs = c(weatherApp = "https://github.com/Programming-The-Next-Step/weather_app.git"))
 library(shiny)
 library(shinyWidgets)
 library(png) 
@@ -23,7 +23,7 @@ library(mapview)
 library(magick)
 library(stringr)
 
-my_api_key <- Sys.getenv("MY_API")
+my_api_key <- "4442c8a4077bb52da19a77c4fa41f5f5"
 
 # This creates the user interface 
 ui <- fluidPage(
@@ -47,7 +47,7 @@ ui <- fluidPage(
             fluidRow(column(width = 12, 
                             align = "center",
                             textInput(inputId = "location", h3("Please enter a location"),
-                                      value = "Amsterdam"))
+                                      value = "Enter location..."))
                      ),
             
             # insert select box 
@@ -203,11 +203,15 @@ server <- function(input, output, session) {
         
     })
     
+    ### this part is causing problems when hosting it on the shiny server ###
+    ### can't write and load files on the shiny server locally ###
+    
     output$weather_image <- renderImage({
         
         weatherApp::get_weather_image(my_location(), my_api_key)
-        list( src = "www/weather_image.png",
+        list( src = "./www/weather_image.png",
               alt = paste("weather_image"),
+              contentType = 'image/png',
               width = 500,
               height = 100)
     })
@@ -215,8 +219,9 @@ server <- function(input, output, session) {
     output$weather_icon <- renderImage({
         
         weatherApp::get_icon(my_location(), my_api_key)
-        list( src = "www/weather_icon.png",
+        list( src = "./www/weather_icon.png",
               alt = paste("weather_icon"),
+              contentType = 'image/png',
               width = 50,
               height = 40)
     })
@@ -224,7 +229,7 @@ server <- function(input, output, session) {
     output$weather_gif <- renderImage({
         
         weatherApp::get_weather_gif(my_location(), my_api_key)
-        list( src = "www/my_weather.gif",
+        list( src = "./www/my_weather.gif",
               alt = paste("weather_gif"),
               width = 220,
               height = 150)
